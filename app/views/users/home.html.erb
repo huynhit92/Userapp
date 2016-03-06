@@ -1,0 +1,15 @@
+<span id="data" data-users="<%= @users.to_json %>">
+<div ng-controller="ngCtrl" ng-init="init()">
+<h1>User Home</h1>
+
+<table>
+<%# @users.each do |user| %>
+<tr ng-repeat="user in users">
+  <td>{{user.email}}</td>
+  <td><button ng-click="edit(user)">Edit</button></td>
+  <td><button type="button" data-toggle="modal" data-target="#heroModal" ng-click="edit(user)">編集</button></td>
+</tr>
+<%# end %>
+</table>
+<%= render partial: "modal" %>
+</div>

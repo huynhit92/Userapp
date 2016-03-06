@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Userapp</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+  <script>
+      var myApp = angular.module('myApp',['Services']);
+      myApp.controller('ngCtrl',['$scope','User',function($scope, User){
+        $scope.init = function(){
+          $scope.users = $("#data").data("users")
+          console.log("huynh")
+          //console.log($scope.users)
+        };
+
+        $scope.edit = function(user) {
+        //  alert(user.email);
+        
+          $scope.user = {}
+          angular.copy( user, $scope.user);
+
+          $scope.save = function(params){
+            console.log(params)
+           // User.update(user: user)
+            if (params.id != null) {
+              User.update({
+                user: params
+              }).$promise.then((function(value) {
+                console.log(value)
+                angular.copy( value, user);
+                angular.copy( value, $scope.user); 
+               //$scope.hero = angular.copy(hero);
+                return;
+              }), function(error) {
+                $scope.errors = error.data;
+                $scope.success = null;
+                return;
+              });
+              return;
+            }
+          };
+
+        };
+
+      }]);
+  </script>
+</head>
+<body ng-app="myApp">
+  <% if user_signed_in? %>
+  
+  <%= link_to "Sign out", destroy_user_session_path, method: :delete %><br>
+
+  <% else %>
+  
+  <%= link_to "Sign in", new_user_session_path %><br>
+  <%= link_to "Sign up", new_user_registration_path %><br>
+
+  <% end %>
+  <%= link_to "Home", page_home_path %>
+  <%= link_to "About", page_about_path %>
+  <%= link_to "Contact", page_contact_path %>
+
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+
+<%= yield %>
+
+</body>
+</html>
